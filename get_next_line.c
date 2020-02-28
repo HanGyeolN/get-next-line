@@ -6,7 +6,7 @@
 /*   By: hna <hna@student.42seoul.kr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/27 13:45:40 by hna               #+#    #+#             */
-/*   Updated: 2020/02/28 16:16:28 by hna              ###   ########.fr       */
+/*   Updated: 2020/02/28 17:51:42 by hna              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,19 @@ int		get_next_line(int fd, char **line)
 //			printf("buf: %s\n", buf);
 //			printf("===========\n");
 		}
-		if (readn == 0)
-			return (0);
 		if (buf[i] == '\n')
 		{
+			if (readn == 0)
+				return (0);
 //			printf("i: %d, readn: %d\n", i, readn);
 			ret = ft_strjoin_eol(ret, &buf[start]);
 			*line = ret;
 			start = i + 1;
+			if ((i == readn - 1 && readn != BUFFER_SIZE))
+			{
+				free(buf);
+				return (0);
+			}
 			return (1);
 		}
 		i++;
@@ -71,18 +76,19 @@ int		get_next_line(int fd, char **line)
 int		main(int argc, char **argv)
 {
 	int		fd;
-	char	**buf;
+	char	**line;
 	char	*temp;
 	int		ret;
 
-	buf = &temp;
+	line = &temp;
 	if (argc || argv)
 		printf("./get_next_line <file>\n");
-	fd = open(argv[1], O_RDONLY);
+	fd = (argc == 1) ? 0 : open(argv[1], O_RDONLY);
 	ret = 1;
-	while (get_next_line(fd, buf))
-		printf("%s\n", *buf);
-	free(*buf);
+	while ((ret = get_next_line(fd, line)))
+		printf("%s\n", *line);
+	printf("%s\n", *line);
+	free(*line);
 	close(fd);
 	return(0);
 }
