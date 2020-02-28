@@ -6,7 +6,7 @@
 /*   By: hna <hna@student.42seoul.kr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/27 13:45:40 by hna               #+#    #+#             */
-/*   Updated: 2020/02/28 15:42:29 by hna              ###   ########.fr       */
+/*   Updated: 2020/02/28 16:16:28 by hna              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,9 @@ int		get_next_line(int fd, char **line)
 //			printf("buf: %s\n", buf);
 //			printf("===========\n");
 		}
-		else if (buf[i] == '\n' && i + 1 == readn)
-		{
-//			printf("i: %d, readn: %d\n", i, readn);
-			ret = ft_strjoin_eol(ret, &buf[start]);
-			*line = ret;
+		if (readn == 0)
 			return (0);
-		}
-		else if (buf[i] == '\n')
+		if (buf[i] == '\n')
 		{
 //			printf("i: %d, readn: %d\n", i, readn);
 			ret = ft_strjoin_eol(ret, &buf[start]);
@@ -85,12 +80,8 @@ int		main(int argc, char **argv)
 		printf("./get_next_line <file>\n");
 	fd = open(argv[1], O_RDONLY);
 	ret = 1;
-	while (ret)
-	{
-		ret = get_next_line(fd, buf);
-		//printf("ret: %d, str: %s\n", ret, *buf);
+	while (get_next_line(fd, buf))
 		printf("%s\n", *buf);
-	}
 	free(*buf);
 	close(fd);
 	return(0);
