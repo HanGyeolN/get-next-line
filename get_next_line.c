@@ -6,7 +6,7 @@
 /*   By: hna <hna@student.42seoul.kr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/27 13:45:40 by hna               #+#    #+#             */
-/*   Updated: 2020/03/01 17:42:18 by hna              ###   ########.fr       */
+/*   Updated: 2020/03/01 21:31:42 by hna              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,42 +21,44 @@ void	*ft_memset(void *arr, int c, size_t len)
 	return (arr);
 }
 
+/*
+char	*get_line(int fd, char **line)
+{
+*/
+
 int		get_next_line(int fd, char **line)
 {
-	static char	buf[BUFFER_SIZE + 1];
-	static int	start;
-	char		*ret;
-	int			i;
-	static int	readn;
-
+	static t_buffer	buffer;
+	char			*ret;
 
 	if (!(ret = malloc(1)) || fd < 0)
 		return (-1);
-	i = start;
-	if (*buf == 0)
-		readn = read(fd, buf, BUFFER_SIZE);
-	if (readn < 0)
+	buffer.cur_idx = buffer.start_idx;
+	if (buffer.buf[0] == 0)
+		buffer.read_n = read(fd, buffer.buf, BUFFER_SIZE);
+	if (buffer.read_n < 0)
+	{
+		free(ret);
 		return (-1);
+	}
 	ret[0] = '\0';
-	while (buf[i] != '\n' && readn != 0)
+	while (buffer.buf[buffer.cur_idx] != '\n' && buffer.read_n > 0)
 	{
-		if (i == BUFFER_SIZE)
+		if (buffer.cur_idx == BUFFER_SIZE)
 		{
-			ret = ft_strjoin_eol(ret, &buf[start]);
-			i = -1;
-			start = 0;
-			ft_memset((void *)buf, 0, BUFFER_SIZE + 1);
-			readn = read(fd, buf, BUFFER_SIZE);
+			ret = ft_strjoin_eol(ret, &(buffer.buf[buffer.start_idx]));
+			buffer.cur_idx = -1;
+			buffer.start_idx = 0;
+			ft_memset((void *)buffer.buf, 0, BUFFER_SIZE + 1);
+			buffer.read_n = read(fd, buffer.buf, BUFFER_SIZE);
 		}
-		i++;
+		buffer.cur_idx++;
 	}
-	if (readn == 0)
-	{
-		*line = ret;
-		return (0);
-	}
-	ret = ft_strjoin_eol(ret, &buf[start]);
 	*line = ret;
-	start = i + 1;
+	if (buffer.read_n == 0)
+		return (0);
+	ret = ft_strjoin_eol(ret, &(buffer.buf[buffer.start_idx]));
+	*line = ret;
+	buffer.start_idx = buffer.cur_idx + 1;
 	return (1);
 }

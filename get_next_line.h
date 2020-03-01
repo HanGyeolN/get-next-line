@@ -6,7 +6,7 @@
 /*   By: hna <hna@student.42seoul.kr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/27 13:43:38 by hna               #+#    #+#             */
-/*   Updated: 2020/02/28 14:44:42 by hna              ###   ########.fr       */
+/*   Updated: 2020/03/01 21:05:25 by hna              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,14 @@
 
 # include <stdlib.h>
 # include <unistd.h>
+
+typedef struct	s_buffer
+{
+	int		start_idx;
+	int		cur_idx;
+	int		read_n;
+	char	buf[BUFFER_SIZE + 1];
+}				t_buffer;
 
 int		get_next_line(int fd, char **line);
 int		ft_strlen(char *str);
