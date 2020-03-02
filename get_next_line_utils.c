@@ -6,7 +6,7 @@
 /*   By: hna <hna@student.42seoul.kr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/27 14:20:28 by hna               #+#    #+#             */
-/*   Updated: 2020/02/28 15:05:04 by hna              ###   ########.fr       */
+/*   Updated: 2020/03/02 14:35:09 by hna              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,11 +83,7 @@ char	*ft_strjoin_eol(char *s1, char *s2)
 	if (!(ret = malloc(sizeof(char) * (s1_len + s2_len + 1))))
 		return (0);
 	ft_strlcpy(ret, s1, s1_len + 1);
-//	printf("ft_strlcat_eol function start\n");
-//	printf("ret: %s\n", ret);
-//	printf("s2 : %s\n", s2);
 	ft_strlcat_eol(ret, s2, s1_len + s2_len + 1);
-//	printf("ft_strlcat_eol function end\n");
 	free(s1);
 	return (ret);
 }

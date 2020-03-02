@@ -6,7 +6,7 @@
 /*   By: hna <hna@student.42seoul.kr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/27 13:43:38 by hna               #+#    #+#             */
-/*   Updated: 2020/03/01 21:05:25 by hna              ###   ########.fr       */
+/*   Updated: 2020/03/02 18:39:20 by hna              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 typedef struct	s_buffer
 {
-	int		start_idx;
+	int		fd;
 	int		cur_idx;
 	int		read_n;
 	char	buf[BUFFER_SIZE + 1];

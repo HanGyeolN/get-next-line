@@ -6,7 +6,7 @@
 /*   By: hna <hna@student.42seoul.kr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/27 13:45:40 by hna               #+#    #+#             */
-/*   Updated: 2020/03/02 11:39:35 by hna              ###   ########.fr       */
+/*   Updated: 2020/03/02 14:36:09 by hna              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,39 +21,53 @@ void	*ft_memset(void *arr, int c, size_t len)
 	return (arr);
 }
 
+int		read_if_empty(t_buffer *buf)
+{
+	if (!(buf->buf[0]))
+		buf->read_n = read(buf->fd, buf->buf, BUFFER_SIZE);
+	if (buf->read_n < 0)
+		return (-1);
+	return (0);
+}
+
+void	init_read(t_buffer *buf)
+{
+	ft_memset((void *)buf->buf, 0, BUFFER_SIZE + 1);
+	buf->read_n = read(buf->fd, buf->buf, BUFFER_SIZE);
+	buf->cur_idx = 0;
+}
+
+int		init_set(int fd, char **line, t_buffer *buf)
+{
+	buf->fd = fd;
+	if (fd < 0 || !(*line = malloc(sizeof(char) * 1)))
+		return (-1);
+	**line = '\0';
+	return (0);
+}
+
 int		get_next_line(int fd, char **line)
 {
-	static t_buffer	buffer;
-	char			*ret;
+	static t_buffer	buf;
 
-	if (!(ret = malloc(1)) || fd < 0)
+	if (init_set(fd, line, &buf) == -1 || read_if_empty(&buf) == -1)
 		return (-1);
-	buffer.cur_idx = buffer.start_idx;
-	if (buffer.buf[0] == 0)
-		buffer.read_n = read(fd, buffer.buf, BUFFER_SIZE);
-	if (buffer.read_n < 0)
+	while (buf.read_n != 0)
 	{
-		free(ret);
-		return (-1);
-	}
-	ret[0] = '\0';
-	while (buffer.buf[buffer.cur_idx] != '\n' && buffer.read_n > 0)
-	{
-		if (buffer.cur_idx == BUFFER_SIZE)
+		*line = ft_strjoin_eol(*line, &(buf.buf[buf.cur_idx]));
+		while (buf.buf[buf.cur_idx] != '\n' && buf.buf[buf.cur_idx] != '\0')
+			buf.cur_idx += 1;
+		if (buf.cur_idx == BUFFER_SIZE || buf.buf[buf.cur_idx] == '\0')
 		{
-		 	ret = ft_strjoin_eol(ret, &(buffer.buf[buffer.start_idx]));
-			*line = ret;
-			buffer.cur_idx = -1;
-			buffer.start_idx = 0;
-			ft_memset((void *)buffer.buf, '\0', BUFFER_SIZE);
-			buffer.read_n = read(fd, buffer.buf, BUFFER_SIZE);
+			init_read(&buf);
+			if (buf.buf[buf.cur_idx] == '\0')
+				return (0);
 		}
-		buffer.cur_idx++;
+		else
+		{
+			buf.cur_idx++;
+			return (1);
+		}
 	}
-	if (buffer.read_n == 0)
-		return (0);
-	ret = ft_strjoin_eol(ret, &(buffer.buf[buffer.start_idx]));
-	*line = ret;
-	buffer.start_idx = buffer.cur_idx + 1;
-	return (1);
+	return (0);
 }
