@@ -6,7 +6,7 @@
 /*   By: hna <hna@student.42seoul.kr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/27 13:45:40 by hna               #+#    #+#             */
-/*   Updated: 2020/03/01 21:31:42 by hna              ###   ########.fr       */
+/*   Updated: 2020/03/02 11:39:35 by hna              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,6 @@ void	*ft_memset(void *arr, int c, size_t len)
 		p[--len] = c;
 	return (arr);
 }
-
-/*
-char	*get_line(int fd, char **line)
-{
-*/
 
 int		get_next_line(int fd, char **line)
 {
@@ -46,15 +41,15 @@ int		get_next_line(int fd, char **line)
 	{
 		if (buffer.cur_idx == BUFFER_SIZE)
 		{
-			ret = ft_strjoin_eol(ret, &(buffer.buf[buffer.start_idx]));
+		 	ret = ft_strjoin_eol(ret, &(buffer.buf[buffer.start_idx]));
+			*line = ret;
 			buffer.cur_idx = -1;
 			buffer.start_idx = 0;
-			ft_memset((void *)buffer.buf, 0, BUFFER_SIZE + 1);
+			ft_memset((void *)buffer.buf, '\0', BUFFER_SIZE);
 			buffer.read_n = read(fd, buffer.buf, BUFFER_SIZE);
 		}
 		buffer.cur_idx++;
 	}
-	*line = ret;
 	if (buffer.read_n == 0)
 		return (0);
 	ret = ft_strjoin_eol(ret, &(buffer.buf[buffer.start_idx]));
