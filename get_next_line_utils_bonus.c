@@ -1,19 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hna <hna@student.42seoul.kr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/27 14:20:28 by hna               #+#    #+#             */
-/*   Updated: 2020/03/02 14:35:09 by hna              ###   ########.fr       */
+/*   Created: 2020/03/03 18:17:51 by hna               #+#    #+#             */
+/*   Updated: 2020/03/03 18:18:03 by hna              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
-
-#include <stdio.h>
 int		ft_strlen(char *str)
 {
 	int		i;

@@ -6,14 +6,12 @@
 /*   By: hna <hna@student.42seoul.kr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/27 14:20:28 by hna               #+#    #+#             */
-/*   Updated: 2020/03/02 14:35:09 by hna              ###   ########.fr       */
+/*   Updated: 2020/03/03 18:17:37 by hna              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-
-#include <stdio.h>
 int		ft_strlen(char *str)
 {
 	int		i;
