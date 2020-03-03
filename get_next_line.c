@@ -6,20 +6,11 @@
 /*   By: hna <hna@student.42seoul.kr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/27 13:45:40 by hna               #+#    #+#             */
-/*   Updated: 2020/03/02 14:36:09 by hna              ###   ########.fr       */
+/*   Updated: 2020/03/03 16:24:39 by hna              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-void	*ft_memset(void *arr, int c, size_t len)
-{
-	unsigned char	*p = arr;
-
-	while (len > 0)
-		p[--len] = c;
-	return (arr);
-}
 
 int		read_if_empty(t_buffer *buf)
 {
@@ -32,7 +23,11 @@ int		read_if_empty(t_buffer *buf)
 
 void	init_read(t_buffer *buf)
 {
-	ft_memset((void *)buf->buf, 0, BUFFER_SIZE + 1);
+	int		i;
+
+	i = BUFFER_SIZE + 1;
+	while (--i >= 0)
+		buf->buf[i] = 0;
 	buf->read_n = read(buf->fd, buf->buf, BUFFER_SIZE);
 	buf->cur_idx = 0;
 }
@@ -50,6 +45,8 @@ int		get_next_line(int fd, char **line)
 {
 	static t_buffer	buf;
 
+	if (BUFFER_SIZE < 1 || line == 0)
+		return (-1);
 	if (init_set(fd, line, &buf) == -1 || read_if_empty(&buf) == -1)
 		return (-1);
 	while (buf.read_n != 0)
